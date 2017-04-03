@@ -36,4 +36,35 @@ $(document).ready(function(e) {
         });
     });
     
+    $('.sortlist').sortable({
+        //this connectWith option allows you connect one list to another.
+        connectWith:'.sortlist',
+        //change cursor to pointer.
+        cursor:'pointer',
+        //highlight the area you can drop the item.
+        placeholder:'ui-state-highlight',
+        //options that cannot make drop action.
+        cancel:'.delete,.done'
+        
+    });
+    
+    $('.sortlist').on('click','.delete',function() {
+        $(this).dialog({
+            modal: true, autoOpen: false,
+            buttons:{
+                "confirm": function(){
+                    //effect() method applies one of its many effects to the element.
+                    //In this case,the puff effect makes an element grow in size, fade
+                    //away, and disappear.
+                    //The function inside the effect() method is a callback function that runs once
+                    //the effect is done.
+                    $(this).parent('li').effect('puff', function() { $(this).remove(); });
+                },
+                "cancel": function(){
+                    
+                }
+            }
+        });
+        
+    });
 }); // end ready
