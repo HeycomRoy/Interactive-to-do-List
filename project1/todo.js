@@ -23,7 +23,8 @@ $(document).ready(function(e) {
                 $('#task').val('');
             },
             "Cancel": function(){
-                $(this).dialog('close');}
+                $(this).dialog('close');
+            }
         }
     });
     $('#todo-list').on('click', '.done', function() {
@@ -48,23 +49,31 @@ $(document).ready(function(e) {
         
     });
     
+    var delTarget;
     $('.sortlist').on('click','.delete',function() {
-        $(this).dialog({
-            modal: true, autoOpen: false,
-            buttons:{
-                "confirm": function(){
-                    //effect() method applies one of its many effects to the element.
-                    //In this case,the puff effect makes an element grow in size, fade
-                    //away, and disappear.
-                    //The function inside the effect() method is a callback function that runs once
-                    //the effect is done.
-                    $(this).parent('li').effect('puff', function() { $(this).remove(); });
-                },
-                "cancel": function(){
-                    
-                }
-            }
-        });
-        
+        //window.alert("dont delete");
+        //effect() method applies one of its many effects to the element.
+        //In this case,the puff effect makes an element grow in size, fade
+        //away, and disappear.
+        //The function inside the effect() method is a callback function that runs once
+        //the effect is done.   
+        //$(this).parent('li').effect('puff', function() { $(this).remove(); });
+        $('#confirm-delete').dialog('open');
+        delTarget = $(this).parent('li');
+
     });
+    
+    $('#confirm-delete').dialog({
+        modal: true, autoOpen: false,
+        buttons:{
+            "confirm": function(){
+                delTarget.effect('puff', function() { $(this).remove(); });
+                $(this).dialog('close');
+            },
+            "cancel": function(){
+                $(this).dialog('close');
+            }
+        }
+    });
+    
 }); // end ready
