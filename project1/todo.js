@@ -5,32 +5,40 @@ $(document).ready(function(e) {
                 $('#new-todo').dialog('open');
             }
     );
+    var taskName;
+    var userName;
     $('#new-todo').dialog({
         modal: true, autoOpen: false,
         buttons:{
             "Add task": function(){
-                var taskName = $('#task').val();
+                taskName = $('#task').val();
+                userName = $('#user').val();
                 if(taskName === ""){return false;}
                 var taskHTML = '<li><span class="done">%</span>';
                 taskHTML += '<span class="delete">x</span>';
-                taskHTML += '<span class="task"></span></li>';
+                taskHTML += '<span class="edit">+</span>'
+                taskHTML += '<span class="task"></span>';
+                taskHTML += '<span class="user"></span></li>';
                 var $newTask = $(taskHTML);
                 $newTask.find('.task').text(taskName);
-                $newTask.hide();
+                $newTask.find('.user').text(userName);
                 $('#todo-list').prepend($newTask);
                 $newTask.show('clip',250).effect('highlight',1000);
                 $(this).dialog('close');
                 $('#task').val('');
+                $('#user').val('');
             },
             "Cancel": function(){
                 $(this).dialog('close');
             }
         }
     });
+
     $('#todo-list').on('click', '.done', function() {
         var $taskItem = $(this).parent('li');
         $taskItem.slideUp(250, function() {
             var $this = $(this);
+            $this.children('.edit').hide();
             $this.detach();
             $('#completed-list').prepend($this);
             $this.slideDown();
@@ -38,6 +46,15 @@ $(document).ready(function(e) {
     });
     
     $('.sortlist').sortable({
+        //select right child span to display/hide the edit button
+        update: function(event, ui){
+            if($('.sortlist').is('#completed-list')){
+                $('#completed-list').find('.edit').hide();
+            }
+            if($('.sortlist').is('#todo-list')){
+                $('#todo-list').find('.edit').show();
+            }
+        },
         //this connectWith option allows you connect one list to another.
         connectWith:'.sortlist',
         //change cursor to pointer.
@@ -61,6 +78,24 @@ $(document).ready(function(e) {
         $('#confirm-delete').dialog('open');
         delTarget = $(this).parent('li');
 
+    });
+    
+    $('#todo-list').on('click', '.edit',function(){
+        $('#edit-info').dialog('open');
+    });
+    
+    $('#edit-info').dialog({
+        modal: true, autoOpen: false,
+        buttons:{
+            "confirm": function(){
+                taskName = $('#edit-task').val();
+                userName = $('#edit-user').val();
+                $(this).dialog('close');
+            },
+            "cancel": function(){
+                $(this).dialog('close');
+            }
+        }
     });
     
     $('#confirm-delete').dialog({

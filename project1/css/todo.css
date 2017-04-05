@@ -107,7 +107,7 @@ label {
   min-height: 30px;
 }
 
-.delete, .done {
+.delete,.edit, .done {
   font-family: ModernPictograms;
   font-size: .9em;
   display: inline-block;
@@ -125,14 +125,14 @@ label {
   margin-right: 1em;
   color: white; }
 
-.delete {
+.delete, .edit {
   float: right; }
 
 .delete:hover {
   background-color: red;
   color: white; }
 
-#todo-list .done:hover {
+#todo-list .done:hover , .edit:hover{
   background-color: green;
   color: white; }
 
