@@ -5,14 +5,13 @@ $(document).ready(function(e) {
                 $('#new-todo').dialog('open');
             }
     );
-    var taskName;
-    var userName;
+    
     $('#new-todo').dialog({
         modal: true, autoOpen: false,
         buttons:{
             "Add task": function(){
-                taskName = $('#task').val();
-                userName = $('#user').val();
+                var taskName = $('#task').val();
+                var userName = $('#user').val();
                 if(taskName === ""){return false;}
                 var taskHTML = '<li><span class="done">%</span>';
                 taskHTML += '<span class="delete">x</span>';
@@ -79,18 +78,21 @@ $(document).ready(function(e) {
         delTarget = $(this).parent('li');
 
     });
-    
+    var $editTarget;
     $('#todo-list').on('click', '.edit',function(){
         $('#edit-info').dialog('open');
+        $editTarget = $(this).parent('li');
     });
     
     $('#edit-info').dialog({
         modal: true, autoOpen: false,
         buttons:{
             "confirm": function(){
-                taskName = $('#edit-task').val();
-                userName = $('#edit-user').val();
+                $editTarget.find('.task').text($('#edit-task').val());
+                $editTarget.find('.user').text($('#edit-user').val());
                 $(this).dialog('close');
+                $('#edit-task').val('');
+                $('#edit-user').val('');
             },
             "cancel": function(){
                 $(this).dialog('close');
